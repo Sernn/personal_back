@@ -78,6 +78,8 @@ exports.loginCustomer = async (req, res, next) => {
   try {
     const { userName, password } = req.body;
 
+    console.log(`userName`, userName);
+
     const customer = await Customer.findOne({ where: { userName } });
     if (!customer)
       return res
@@ -96,6 +98,8 @@ exports.loginCustomer = async (req, res, next) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: +process.env.JWT_EXPIRES_IN,
     });
+
+    res.status(200).json({ token: token });
   } catch (err) {
     next(err);
   }
